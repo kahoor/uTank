@@ -56,7 +56,7 @@ public class Menu extends JPanel{
             }
         });
         // ammo:
-        slider_ammo = new JSlider(JSlider.HORIZONTAL, 0, 50, 50);
+        slider_ammo = new JSlider(JSlider.HORIZONTAL, 1, 50, 50);
         slider_ammo.setForeground(Color.white);
         slider_ammo.setBackground(Color.black);
         slider_ammo.setBounds(150, 200, 200, 50);
@@ -70,7 +70,7 @@ public class Menu extends JPanel{
         label_ammo.setForeground(Color.WHITE);
         this.add(label_ammo);
         // goal:
-        slider_goal = new JSlider(JSlider.HORIZONTAL, 0, 50, 50);
+        slider_goal = new JSlider(JSlider.HORIZONTAL, 1, 50, 50);
         slider_goal.setForeground(Color.white);
         slider_goal.setBackground(Color.black);
         slider_goal.setBounds(150, 100, 200, 50);
