@@ -119,16 +119,22 @@ public class GamePlay extends JPanel {
     }
 
     void fireHandler(Tank t){
+        Music music = new Music();
+
+
+
         if (t.shots > 0) {
+
             t.shots--;
             if (t.bulletType == "shot") {
-
+                music.playSound(music.fire)
                 this.shotsInTheAir.add(new Shot(
                         t.getGunX(), t.getGunY(), t.getDirection(), t, t.color
                 ));
             }
 
             if (t.bulletType == "laser") {
+                music.playSound(music.laser)
                 this.shotsInTheAir.add(new Laser(
                         t.getGunX(), t.getGunY(), t.getDirection(), t
                 ));
@@ -261,14 +267,15 @@ public class GamePlay extends JPanel {
         super.paint(graphics);
         graphics.setColor(Color.white);
         graphics.drawString("Points to win : " + this.getGOAL(),1094, 40);
+        graphics.drawString("press esc to pause" ,1094, 70)
         graphics.setColor(Color.CYAN);
-        graphics.drawString("Player 1 :", 1044, 90);
-        graphics.drawString(player1.points + " points", 1064, 110);
-        graphics.drawString(player1.getTank().shots + " shots left", 1064, 130);
+        graphics.drawString("Player 1 :", 1044, 120);
+        graphics.drawString(player1.points + " points", 1064, 145);
+        graphics.drawString(player1.getTank().shots + " shots left", 1064, 170);
         graphics.setColor(Color.RED);
-        graphics.drawString(player2.points + " points", 1064, 410);
-        graphics.drawString("Player 2 :", 1044, 390);
-        graphics.drawString(player2.getTank().shots + " shots left", 1064, 430);
+        graphics.drawString(player2.points + " points", 1064, 445);
+        graphics.drawString("Player 2 :", 1044, 420);
+        graphics.drawString(player2.getTank().shots + " shots left", 1064, 470);
         this.everyThing.forEach(thing -> thing.draw(graphics));
         this.shotsInTheAir.forEach(shot -> shot.draw(graphics));
         this.walls.forEach(wall -> wall.draw(graphics));
