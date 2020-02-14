@@ -45,6 +45,15 @@ public class Menu extends JPanel{
 
         this.setBackground(Color.black);
 
+        listen[0]=37;
+        listen[1]=39;
+        listen[2]=38;
+        listen[3]=77;
+        listen[4]=65;
+        listen[5]=68;
+        listen[6]=87;
+        listen[7]=70;
+
         // button_exit:
         JButton button_exit = new JButton("EXIT");
         button_exit.setBounds(30, 620, 100, 30);
@@ -99,14 +108,14 @@ public class Menu extends JPanel{
             }
         }
 
-        button_keys[0][0].setText("");
-        button_keys[0][1].setText("");
-        button_keys[0][2].setText("");
-        button_keys[0][3].setText("");
-        button_keys[1][0].setText("");
-        button_keys[1][1].setText("");
-        button_keys[1][2].setText("");
-        button_keys[1][3].setText("");
+        button_keys[0][0].setText("left");
+        button_keys[0][1].setText("right");
+        button_keys[0][2].setText("up");
+        button_keys[0][3].setText("m");
+        button_keys[1][0].setText("a");
+        button_keys[1][1].setText("d");
+        button_keys[1][2].setText("w");
+        button_keys[1][3].setText("f");
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 4; j++) {
                 button_keys[i][j].setBounds(100 + 300 * i, 350 + 21 * j, 80, 20);
