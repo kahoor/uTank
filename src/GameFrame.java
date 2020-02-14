@@ -41,6 +41,7 @@ public class GameFrame extends JFrame{
 
 
         if (this.menu.newGame) {
+            gameplay.gameStart(false,false);
             gameplay.setMap(menu.getMap());
             gameplay.setMax_ammo(menu.slider_ammo.getValue());
             gameplay.setGOAL(menu.slider_goal.getValue());

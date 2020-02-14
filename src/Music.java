@@ -9,7 +9,7 @@ public  class Music {
     Music(){
 
         fire = new File("fire.wav");
-        laser = new File("laser.wav")
+        laser = new File("laser.wav");
 
     }
 
