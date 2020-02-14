@@ -17,17 +17,17 @@ public class Main {
         menu.main();
         GameFrame gameFrame = new GameFrame(menu, gamePlay, WIDTH, HEIGHT);
         gamePlay.addKeyListener(listener);
-        gamePlay.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                System.out.println("GAINED");
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                System.out.println("LOST");
-            }
-        });
+//        gamePlay.addFocusListener(new FocusListener() {
+//            @Override
+//            public void focusGained(FocusEvent e) {
+//                System.out.println("GAINED");
+//            }
+//
+//            @Override
+//            public void focusLost(FocusEvent e) {
+//                System.out.println("LOST");
+//            }
+//        });
         gameFrame.setVisible(true);
 
         long lastTime = System.currentTimeMillis();
