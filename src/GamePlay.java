@@ -67,8 +67,11 @@ public class GamePlay extends JPanel {
         this.walls.add(bottomEdge);
     }
 
-    private void gameStart(boolean p1win, boolean p2win) {
+    public void gameStart(boolean p1win, boolean p2win) {
         this.setBackground(Color.black);
+        everyThing.clear();
+        shotsInTheAir.clear();
+        powerUpsInTheAir.clear();
 
 
         this.player1.newRound(p1win, rand.nextInt(WIDTH-100)+50,
