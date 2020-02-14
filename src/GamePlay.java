@@ -18,19 +18,23 @@ public class GamePlay extends JPanel {
     private Player player2;
     private Player player1;
 
-    private int WIDTH, HEIGHT;
+    private int WIDTH, HEIGHT, Max_ammo, GOAL;
 
-     GameActionListener listener;
+    GameActionListener listener;
 
     private Random rand = new Random();
 
 
-    GamePlay(Player p1, Player p2, GameActionListener listener , int WIDTH, int HEIGHT){
-        this.WIDTH = WIDTH;
+    GamePlay(Player p1, Player p2, GameActionListener listener , int WIDTH, int HEIGHT, int max_ammo, int goal){
+        this.WIDTH = WIDTH-200;
         this.HEIGHT = HEIGHT;
         player1=p1;
         player2=p2;
+//        player1.getTank().shots = max_ammo;
+//        player2.getTank().shots = max_ammo;
+        this.setGOAL(goal);
         this.listener = listener;
+        this.setMax_ammo(max_ammo);
         addWalls();
         gameStart(false, false);
     }
@@ -61,13 +65,17 @@ public class GamePlay extends JPanel {
         this.walls.add(rightEdge);
         Wall bottomEdge = new Wall(20, HEIGHT - 40, WIDTH - 40,1);
         this.walls.add(bottomEdge);
-        }
+    }
 
     private void gameStart(boolean p1win, boolean p2win) {
         this.setBackground(Color.black);
 
-        this.player1.newRound(p1win, rand.nextInt(WIDTH-100)+50, rand.nextInt(HEIGHT-100)+50, Color.CYAN);
-        this.player2.newRound(p2win, rand.nextInt(WIDTH-100)+50, rand.nextInt(HEIGHT-100)+50, Color.red);
+        System.out.println("setting tanks max ammo : " + this.getMax_ammo());
+
+        this.player1.newRound(p1win, rand.nextInt(WIDTH-100)+50,
+                rand.nextInt(HEIGHT-100)+50, Color.CYAN, this.getMax_ammo());
+        this.player2.newRound(p2win, rand.nextInt(WIDTH-100)+50,
+                rand.nextInt(HEIGHT-100)+50, Color.red, this.getMax_ammo());
 
         this.everyThing.add(player1.getTank());
         this.everyThing.add(player2.getTank());
@@ -112,26 +120,28 @@ public class GamePlay extends JPanel {
     }
 
     void fireHandler(Tank t){
+        if (t.shots > 0) {
+            t.shots--;
+            if (t.bulletType == "shot") {
 
-        t.shoots++;
-        if (t.bulletType == "shot") {
+                this.shotsInTheAir.add(new Shot(
+                        t.getGunX(), t.getGunY(), t.getDirection(), t, t.color
+                ));
+            }
 
-            this.shotsInTheAir.add(new Shot(
-                t.getGunX(), t.getGunY(), t.getDirection(), t, t.color
-        ));}
+            if (t.bulletType == "laser") {
+                this.shotsInTheAir.add(new Laser(
+                        t.getGunX(), t.getGunY(), t.getDirection(), t
+                ));
+            }
 
-        if (t.bulletType == "laser") {
-            this.shotsInTheAir.add(new Laser(
-                    t.getGunX(), t.getGunY(), t.getDirection(), t
-            ));}
-
-        if (t.bulletType == "mine") {
-            this.shotsInTheAir.add(new Mine(
-                    t.getGunX(), t.getGunY(), t
-            ));
-            t.bulletType = "shot";
+            if (t.bulletType == "mine") {
+                this.shotsInTheAir.add(new Mine(
+                        t.getGunX(), t.getGunY(), t
+                ));
+                t.bulletType = "shot";
+            }
         }
-
 
 
 
@@ -140,7 +150,7 @@ public class GamePlay extends JPanel {
 
     void tankAction(Tank p1Tank, Tank p2Tank){
         if (listener.p1Move) {
-        System.out.println("yeahhh");
+//        System.out.println("yeahhh");
             p1Tank.step();
 
         }
@@ -191,10 +201,7 @@ public class GamePlay extends JPanel {
                     while (wall.contacts(shot)){
                         shot.step();
                     }
-
-
                 }
-
                 shot.step();
             }
 
@@ -231,7 +238,8 @@ public class GamePlay extends JPanel {
         this.shotsInTheAir.forEach(Bullet::growOld);
         this.shotsInTheAir.removeIf(Bullet::isDead);
 
-
+        if (this.player1.getTank().shots > this.getMax_ammo()) this.player1.getTank().shots = this.getMax_ammo();
+        if (this.player2.getTank().shots > this.getMax_ammo()) this.player2.getTank().shots = this.getMax_ammo();
         tankAction(this.player1.tank, this.player2.tank);
 
 
@@ -242,12 +250,30 @@ public class GamePlay extends JPanel {
         // ... handle other game actions
     }
 
+    public int getMax_ammo(){ return this.Max_ammo; }
+    public void setMax_ammo( int maxAmmo ){ this.Max_ammo = maxAmmo; }
+
+    public int getGOAL(){ return this.GOAL; }
+    public void setGOAL( int GOAL ){ this.GOAL = GOAL; }
+
+    public Player getPlayer1(){ return this.player1; }
+
+    public Player getPlayer2(){ return this.player2; }
 
     public void paint(Graphics graphics) {
 
         graphics.setColor(Color.white);
         super.paint(graphics);
         graphics.setColor(Color.white);
+        graphics.drawString("Points to win : " + this.getGOAL(),1094, 40);
+        graphics.setColor(Color.CYAN);
+        graphics.drawString("Player 1 :", 1044, 90);
+        graphics.drawString(player1.points + " points", 1064, 110);
+        graphics.drawString(player1.getTank().shots + " shots left", 1064, 130);
+        graphics.setColor(Color.RED);
+        graphics.drawString(player2.points + " points", 1064, 410);
+        graphics.drawString("Player 2 :", 1044, 390);
+        graphics.drawString(player2.getTank().shots + " shots left", 1064, 430);
         this.everyThing.forEach(thing -> thing.draw(graphics));
         this.shotsInTheAir.forEach(shot -> shot.draw(graphics));
         this.walls.forEach(wall -> wall.draw(graphics));

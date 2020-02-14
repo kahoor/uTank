@@ -8,26 +8,31 @@ public class Main {
         Player player1 = new Player();
         Player player2 = new Player();
 
-        int WIDTH = 1024;
+        int WIDTH = 1224;
         int HEIGHT = 768;
 
         GameActionListener listener = new GameActionListener();
-        GamePlay gamePlay = new GamePlay(player1, player2, listener, WIDTH, HEIGHT);
         Menu menu = new Menu();
         menu.main();
+        GamePlay gamePlay = new GamePlay(player1, player2, listener, WIDTH,
+                HEIGHT, menu.slider_ammo.getValue(), menu.slider_goal.getValue());
+        //gamePlay.setMax_ammo(Menu.slider_ammo.getValue());
+        System.out.println( "gameplay max ammo : " + gamePlay.getMax_ammo());
         GameFrame gameFrame = new GameFrame(menu, gamePlay, WIDTH, HEIGHT);
         gamePlay.addKeyListener(listener);
-//        gamePlay.addFocusListener(new FocusListener() {
-//            @Override
-//            public void focusGained(FocusEvent e) {
-//                System.out.println("GAINED");
-//            }
-//
-//            @Override
-//            public void focusLost(FocusEvent e) {
-//                System.out.println("LOST");
-//            }
-//        });
+        gamePlay.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+
+                //System.out.println("GAINED");
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+
+                //System.out.println("LOST");
+            }
+        });
         gameFrame.setVisible(true);
 
         long lastTime = System.currentTimeMillis();

@@ -3,18 +3,27 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class Menu extends JPanel{
-    static JButton button_start;
+    static JButton button_start, button_new;
     public boolean isClicked = false;
     static int ammo = 25, goal = 25;
-    static JSlider slider_ammo, slider_goal;
+    public JSlider slider_ammo, slider_goal;
     static boolean change = false;
+    public boolean newGame = false;
+    public boolean gameStarted = false;
 
+
+    public void checkContinue(){
+        if (!gameStarted){
+            this.remove(button_start);
+        }
+        else this.add(button_start);
+    }
 
     public void main() {
 
         this.setBackground(Color.black);
         // button_start:
-        button_start = new JButton("START");
+        button_start = new JButton("Continue");
         button_start.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 isClicked = true;
@@ -30,7 +39,20 @@ public class Menu extends JPanel{
         // button_start.setBorder(BorderFactory.createEtchedBorder(0));
         button_start.setBounds(370, 620, 100, 30);
         button_start.setBackground(Color.GRAY);
-        this.add(button_start);
+
+        //button new game
+        button_new = new JButton("NEW GAME");
+        button_new.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                newGame = true;
+                ammo = slider_ammo.getValue();
+                goal = slider_goal.getValue();
+            }
+        });
+        button_new.setBounds(200, 620, 100, 30);
+        button_new.setBackground(Color.GRAY);
+        this.add(button_new);
         // button_exit:
         JButton button_exit = new JButton("EXIT");
         button_exit.setBounds(30, 620, 100, 30);
@@ -42,7 +64,7 @@ public class Menu extends JPanel{
             }
         });
         // ammo:
-        slider_ammo = new JSlider(JSlider.HORIZONTAL, 0, 50, 25);
+        slider_ammo = new JSlider(JSlider.HORIZONTAL, 0, 50, 50);
         slider_ammo.setForeground(Color.white);
         slider_ammo.setBackground(Color.black);
         slider_ammo.setBounds(150, 200, 200, 50);
@@ -55,7 +77,7 @@ public class Menu extends JPanel{
         label_ammo.setBounds(75, 195, 80, 30);
         this.add(label_ammo);
         // goal:
-        slider_goal = new JSlider(JSlider.HORIZONTAL, 0, 50, 25);
+        slider_goal = new JSlider(JSlider.HORIZONTAL, 0, 50, 50);
         slider_goal.setForeground(Color.white);
         slider_goal.setBackground(Color.black);
         slider_goal.setBounds(150, 100, 200, 50);
@@ -157,6 +179,8 @@ public class Menu extends JPanel{
                 });
             }
         }
+
+        System.out.println(slider_ammo.getValue());
 
         this.setSize(1024, 768);
         this.setLayout(null);
