@@ -1,7 +1,3 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-
 public class Main {
     public static void main(String[] args) {
 
@@ -11,35 +7,21 @@ public class Main {
         int WIDTH = 1224;
         int HEIGHT = 768;
 
-        GameActionListener listener = new GameActionListener();
         Menu menu = new Menu();
         menu.main();
-        GamePlay gamePlay = new GamePlay(player1, player2, listener, WIDTH,
-                HEIGHT, menu.slider_ammo.getValue(), menu.slider_goal.getValue());
-        //gamePlay.setMax_ammo(Menu.slider_ammo.getValue());
-        System.out.println( "gameplay max ammo : " + gamePlay.getMax_ammo());
+        GameActionListener listener = new GameActionListener(menu.listen[0],menu.listen[1],menu.listen[2],menu.listen[3],
+                menu.listen[4],menu.listen[5],menu.listen[6],menu.listen[7]);
+        GamePlay gamePlay = new GamePlay(player1, player2, menu.listen, WIDTH,
+                HEIGHT, menu.slider_ammo.getValue(), menu.slider_goal.getValue(), menu.getMap());
         GameFrame gameFrame = new GameFrame(menu, gamePlay, WIDTH, HEIGHT);
         gamePlay.addKeyListener(listener);
-        gamePlay.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
 
-                //System.out.println("GAINED");
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-
-                //System.out.println("LOST");
-            }
-        });
         gameFrame.setVisible(true);
 
         long lastTime = System.currentTimeMillis();
         long delay = 25;
         while (true){
             gameFrame.updateState();
-//            gamePlay.updateState();
 
             gameFrame.repaint();
             long currentTime = System.currentTimeMillis();
@@ -58,19 +40,6 @@ public class Main {
 
 
         }
-
-//        new Timer(5, e -> {
-//            gameFrame.repaint();
-////            if (menu.isClicked) {
-//                gamePlay.updateState();
-//                gamePlay.repaint();
-////            }
-//        }).start();
-
-//        GameScreen gameScreen = new GameScreen();
-//        Menu menu = new Menu();
-//        // gameScreen.main();
-//        menu.main();
 
     }
 }

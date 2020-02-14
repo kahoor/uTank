@@ -15,35 +15,36 @@ public class GamePlay extends JPanel {
     private List<Bullet> shotsInTheAir = new ArrayList<>();
     private List<PowerUp> powerUpsInTheAir = new ArrayList<>();
 
+
     private Player player2;
     private Player player1;
 
     private int WIDTH, HEIGHT, Max_ammo, GOAL;
 
-    GameActionListener listener;
+    public GameActionListener listener;
 
     private Random rand = new Random();
 
+    public String map;
 
-    GamePlay(Player p1, Player p2, GameActionListener listener , int WIDTH, int HEIGHT, int max_ammo, int goal){
+    GamePlay(Player p1, Player p2, int[] listener , int WIDTH, int HEIGHT, int max_ammo, int goal, String map){
         this.WIDTH = WIDTH-200;
         this.HEIGHT = HEIGHT;
         player1=p1;
         player2=p2;
-//        player1.getTank().shots = max_ammo;
-//        player2.getTank().shots = max_ammo;
+        this.setMap(map);
         this.setGOAL(goal);
-        this.listener = listener;
+        this.listener = new GameActionListener(listener[0],listener[1],listener[2],listener[3],
+                listener[4],listener[5],listener[6],listener[7]);
         this.setMax_ammo(max_ammo);
         addWalls();
         gameStart(false, false);
     }
 
-//    public boolean showGame(){ return this.listener.escape;}
 
     void addWalls(){
         try {
-            File map = new File("map1.txt");
+            File map = new File( this.map + ".txt");
             Scanner reader = new Scanner(map);
             while (reader.hasNextLine()) {
                 String data = reader.nextLine();
@@ -54,7 +55,6 @@ public class GamePlay extends JPanel {
                         Integer.parseInt(coords[3])));
             } reader.close();
         } catch (FileNotFoundException e){
-            System.out.println("Map not found!");
         }
 
         Wall leftEdge = new Wall(20, 20, 1,HEIGHT - 60);
@@ -70,7 +70,6 @@ public class GamePlay extends JPanel {
     private void gameStart(boolean p1win, boolean p2win) {
         this.setBackground(Color.black);
 
-        System.out.println("setting tanks max ammo : " + this.getMax_ammo());
 
         this.player1.newRound(p1win, rand.nextInt(WIDTH-100)+50,
                 rand.nextInt(HEIGHT-100)+50, Color.CYAN, this.getMax_ammo());
@@ -143,14 +142,10 @@ public class GamePlay extends JPanel {
             }
         }
 
-
-
-
     }
 
     void tankAction(Tank p1Tank, Tank p2Tank){
         if (listener.p1Move) {
-//        System.out.println("yeahhh");
             p1Tank.step();
 
         }
@@ -233,8 +228,8 @@ public class GamePlay extends JPanel {
 
 
     void updateState() {
-
-//        System.out.println("yeahhh");
+        walls.clear();
+        this.addWalls();
         this.shotsInTheAir.forEach(Bullet::growOld);
         this.shotsInTheAir.removeIf(Bullet::isDead);
 
@@ -247,7 +242,6 @@ public class GamePlay extends JPanel {
 
         chekPowerUp();
 
-        // ... handle other game actions
     }
 
     public int getMax_ammo(){ return this.Max_ammo; }
@@ -255,6 +249,7 @@ public class GamePlay extends JPanel {
 
     public int getGOAL(){ return this.GOAL; }
     public void setGOAL( int GOAL ){ this.GOAL = GOAL; }
+    public void setMap( String map ){ this.map = map; }
 
     public Player getPlayer1(){ return this.player1; }
 
